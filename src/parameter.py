@@ -1,0 +1,12 @@
+from fractions import Fraction
+
+
+BLOCK_SIZE = 3
+D_MODEL = 32
+HEAD_SIZE = 4
+FFN_FACTOR = Fraction(4, 3)
+ATTENTION_DROPOUT = 0.2
+FFN_DROPOUT = 0.1
+
+BATCH_SIZE = 32
+EPOCH_SIZE = 100
