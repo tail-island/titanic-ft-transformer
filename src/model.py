@@ -59,8 +59,8 @@ def create_model(block_size, d_model, head_size, ffn_factor, attention_dropout, 
         o_1, o_2 = inputs
 
         o = tf.concat((Embedding(1)(tf.zeros((tf.shape(o_1)[0], 1))),  # CLS
-                       Embedding(x_1_vocab_size)(o_1),
-                       Tokenize()(o_2)),
+                       Embedding(x_1_vocab_size)(o_1),                 # カテゴリ値の入力
+                       Tokenize()(o_2)),                               # スカラー値の入力
                       axis=1)
 
         for _ in range(block_size):
