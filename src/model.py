@@ -3,7 +3,7 @@ import tensorflow as tf
 from funcy import rcompose
 
 
-def create_model(block_size, d_model, head_size, ffn_factor, attention_dropout, ffn_dropout):
+def create_model(block_size, d_model, head_size, ffn_factor, attention_dropout, ffn_dropout, x_1_vocab_size):
     class Tokenize(tf.keras.layers.Layer):
         def __init__(self):
             super().__init__()
@@ -56,18 +56,11 @@ def create_model(block_size, d_model, head_size, ffn_factor, attention_dropout, 
         return tf.keras.activations.sigmoid
 
     def op(inputs):
-        x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8 = tf.split(inputs, [1, 1, 1, 1, 1, 1, 1, 1], 1)
+        o_1, o_2 = inputs
 
-        o = tf.concat((Embedding(1)(tf.zeros((tf.shape(inputs)[0], 1))),  # CLS
-                       tf.stack((Dense(d_model)(x_1),                     # PClass
-                                 Dense(d_model)(x_3),                     # Age
-                                 Dense(d_model)(x_4),                     # SibSp
-                                 Dense(d_model)(x_5),                     # Parch
-                                 Dense(d_model)(x_6)),                    # Fare
-                                axis=1),
-                       Embedding(2)(x_2),                                 # Sex。マジック・ナンバーが入ってしまってごめんなさい……
-                       Embedding(4)(x_7),                                 # Embarked。マジック・ナンバーが入ってしまってごめんなさい……
-                       Embedding(5)(x_8)),                                # Title。マジック・ナンバーが入ってしまってごめんなさい……
+        o = tf.concat((Embedding(1)(tf.zeros((tf.shape(o_1)[0], 1))),  # CLS
+                       Embedding(x_1_vocab_size)(o_1),
+                       Tokenize()(o_2)),
                       axis=1)
 
         for _ in range(block_size):

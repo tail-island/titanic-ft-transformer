@@ -72,7 +72,7 @@ def get_xs(data_frame, categorical_features, feature_ranges):
     data_frame['Sex'] = data_frame['Sex'] - 1
 
     # 予測に使用するカラムだけを抽出します。
-    return data_frame[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked', 'Title']].values
+    return data_frame[['Sex', 'Embarked', 'Title']].values, data_frame[['Pclass', 'Age', 'SibSp', 'Parch', 'Fare']].values
 
 
 # 出力データを取得します。

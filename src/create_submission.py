@@ -15,8 +15,8 @@ with open('scaler_feature_ranges.pickle', mode='rb') as f:
 
 # データを取得します。
 data_frame = get_test_data_frame()
-xs = get_xs(data_frame, categorical_features, scaler_feature_ranges)
+xs_1, xs_2 = get_xs(data_frame, categorical_features, scaler_feature_ranges)
 
 # 提出量のCSVを作成します。
-submission = pd.DataFrame({'PassengerId': data_frame['PassengerId'], 'Survived': (model.predict(xs)[:, 0] >= 0.5).astype(np.int32)})
+submission = pd.DataFrame({'PassengerId': data_frame['PassengerId'], 'Survived': (model.predict_on_batch((xs_1, xs_2))[:, 0] >= 0.5).astype(np.int32)})
 submission.to_csv('submission.csv', index=False)
