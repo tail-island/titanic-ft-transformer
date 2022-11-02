@@ -64,8 +64,8 @@ def create_model(block_size, d_model, head_size, ffn_factor, attention_dropout, 
                       axis=1)
 
         for _ in range(block_size):
-            o = Add()((o, SelfAttention()(LayerNormalization()(o))))
-            o = Add()((o, FeedForwardNetwork()(LayerNormalization()(o))))
+            o = LayerNormalization()(Add()((o, SelfAttention()(o))))
+            o = LayerNormalization()(Add()((o, FeedForwardNetwork()(o))))
 
         o = Sigmoid()(Dense(1)(o[:, 0]))
 
